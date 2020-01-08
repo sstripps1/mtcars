@@ -9,6 +9,11 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 df = pd.read_csv('mtcars.tsv', sep='\t', skiprows=4)
 max_rows = len(df)
 
+def count_and_std(dataframe):
+    count = dataframe.mpg.count()
+    std = dataframe.mpg.std()
+    return 'Number of Cars: {}<br>Standard Dev of mpg: {}'.format(count, round(std, 2))
+
 def create_table(dataframe, max_rows=max_rows):
     return html.Table(
         [html.Tr([html.Th(col) for col in dataframe.columns])] +
@@ -17,6 +22,16 @@ def create_table(dataframe, max_rows=max_rows):
         ]) for i in range(min(len(dataframe), max_rows))],
     )
 
+def display_model_info(dataframe, min_max):
+    if len(dataframe) == 0:
+        return ''
+    else:
+        if min_max == 'min':
+            row = dataframe.loc[dataframe.mpg.idxmin()]
+        elif min_max == 'max':
+            row = dataframe.loc[dataframe.mpg.idxmax()]
+        return 'Model: {}<br>mpg: {}<br>Cylinders: {}'.format(row.model, row.mpg, row.cyl)
+
 def create_bar_graph(dataframe):
     return dcc.Graph(
         figure={
@@ -24,25 +39,22 @@ def create_bar_graph(dataframe):
                 dict(
                     x=['Min mpg', 'Mean mpg', 'Max mpg'],
                     y=[dataframe.mpg.min(), dataframe.mpg.mean(), dataframe.mpg.max()],
-                    type='bar'
+                    type='bar',
+                    hovertext = [display_model_info(dataframe, 'min'), count_and_std(dataframe),
+                                 display_model_info(dataframe, 'max')],
+                    hoverinfo = 'text'
                 )
             ],
-            'layout': {'Title': 'mpg Stats'}
-        }
+            'layout': {'Title': 'mpg Stats'}}
     )
-
-def count_and_std(dataframe):
-    count = dataframe.mpg.count()
-    std = dataframe.mpg.std()
-    return count, std
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(children=[
     html.H4(children='MT Cars'),
     dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(label='Tab One', value='tab-1'),
-        dcc.Tab(label='Tab Two', value='tab-2')
+        dcc.Tab(label='Table', value='tab-1'),
+        dcc.Tab(label='Chart', value='tab-2')
     ]),
     dcc.Slider(id='my-slider', min=1, max=8, step=1, value=1,
                marks={i: 'Carb {}'.format(i) for i in range(8)}),
