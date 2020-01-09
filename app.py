@@ -40,7 +40,8 @@ def create_bar_graph(dataframe):
                     x=['Min mpg', 'Mean mpg', 'Max mpg'],
                     y=[dataframe.mpg.min(), dataframe.mpg.mean(), dataframe.mpg.max()],
                     type='bar',
-                    hovertext = [display_model_info(dataframe, 'min'), count_and_std(dataframe),
+                    hovertext = [display_model_info(dataframe, 'min'),
+                                 'Mean mpg: {}<br>{}'.format(round(dataframe.mpg.mean(), 2), count_and_std(dataframe)),
                                  display_model_info(dataframe, 'max')],
                     hoverinfo = 'text'
                 )
@@ -51,13 +52,13 @@ def create_bar_graph(dataframe):
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(children=[
-    html.H4(children='MT Cars'),
+    html.H4(children='Motor Trend Cars'),
     dcc.Tabs(id='tabs', value='tab-1', children=[
         dcc.Tab(label='Table', value='tab-1'),
         dcc.Tab(label='Chart', value='tab-2')
     ]),
     dcc.Slider(id='my-slider', min=1, max=8, step=1, value=1,
-               marks={i: 'Carb {}'.format(i) for i in range(8)}),
+               marks={i: 'Carb: {}'.format(i) for i in range(8)}),
     html.Div(id='my-output')
 ])
 

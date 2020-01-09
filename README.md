@@ -33,4 +33,5 @@ Once installed, use the slider to filter the dataset based on number of carburat
 displayed on the first tab, while the second tab will graphically represent the minimum, maximum and mean Miles/gallon 
 (mpg) of the filtered results.
 
-# ADD SCREENSHOT #
+
+![Screenshot](images/app-screenshot.png)
