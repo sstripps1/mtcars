@@ -3,7 +3,7 @@
 ### Introduction
 
 This application filters and analyzes a dataset of fuel consumption / automobile design from a series of cars.
-For more information about the dataset can be found [here](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html).
+More information about the dataset can be found [here](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html).
 
 ### Requirements
 
