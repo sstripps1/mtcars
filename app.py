@@ -4,10 +4,10 @@ import dash_html_components as html
 import pandas as pd
 from dash.dependencies import Input, Output
 
-app = dash.Dash(__name__)
-server = app.server
-
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 df = pd.read_csv("mtcars.tsv", sep="\t", skiprows=4)
 max_rows = len(df)
@@ -65,7 +65,6 @@ def create_bar_graph(dataframe):
     )
 
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(
     children=[
